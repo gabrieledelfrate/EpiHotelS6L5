@@ -9,6 +9,16 @@
 <div class="container mt-5">
     <h2>Prenotazioni per Cliente</h2>
 
+    <div>
+        <form method="get" action="@Url.Action("PrenotazioniPerCliente", "RicercaPrenotazioni")">
+            <div class="form-group">
+                <label for="codiceFiscale">Inserisci il Codice Fiscale del Cliente:</label>
+                <input type="text" id="codiceFiscale" name="codiceFiscale" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Cerca</button>
+        </form>
+    </div>
+
     @if (Model != null && Model.Any())
     {
         <table class="table">
@@ -34,7 +44,7 @@
                 {
                     <tr>
                         <td>@prenotazione.Id</td>
-                        
+
                         <td>@prenotazione.DataPrenotazione.ToShortDateString()</td>
                         <td>@prenotazione.NumeroProgressivoAnno</td>
                         <td>@prenotazione.Anno</td>
