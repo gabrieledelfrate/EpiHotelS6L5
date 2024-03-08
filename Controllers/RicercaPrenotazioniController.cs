@@ -76,7 +76,7 @@ namespace EpiHotel.Controllers
 
         public ActionResult NumeroPrenotazioniPensioneCompleta()
         {
-            int numeroPrenotazioniPensioneCompleta = 0;
+            int? numeroPrenotazioniPensioneCompleta = null;
 
             try
             {
@@ -87,10 +87,10 @@ namespace EpiHotel.Controllers
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
                         string query = @"
-                            SELECT COUNT(*) AS NumeroPrenotazioni
-                            FROM Prenotazioni
-                            WHERE PensioneCompleta = 1
-                        ";
+                    SELECT COUNT(*) AS NumeroPrenotazioni
+                    FROM Prenotazioni
+                    WHERE PensioneCompleta = 1
+                ";
 
                         using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
@@ -114,7 +114,10 @@ namespace EpiHotel.Controllers
                 ViewBag.ErrorMessage = "Errore durante il recupero del numero di prenotazioni per pensione completa: " + ex.Message;
             }
 
-            return View(numeroPrenotazioniPensioneCompleta);
+            ViewBag.NumeroPrenotazioniPensioneCompleta = numeroPrenotazioniPensioneCompleta;
+            return View();
         }
+
+
     }
 }
