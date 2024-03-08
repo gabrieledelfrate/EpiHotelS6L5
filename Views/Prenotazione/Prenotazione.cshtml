@@ -1,0 +1,100 @@
+﻿@model EpiHotel.Models.ClientePrenotazioneModel
+@{
+    ViewBag.Title = "Prenotazione";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Prenotazione</h2>
+
+<h2>Inserisci Prenotazione</h2>
+
+@using (Html.BeginForm("Prenotazione", "Prenotazione", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+
+    <!-- Campi per i dati del cliente -->
+    <div>
+        <label for="Nome">Nome:</label>
+        @Html.TextBoxFor(model => model.Nome)
+    </div>
+
+    <div>
+        <label for="Cognome">Cognome:</label>
+        @Html.TextBoxFor(model => model.Cognome)
+    </div>
+
+    <div>
+        <label for="Citta">Città:</label>
+        @Html.TextBoxFor(model => model.Citta)
+    </div>
+
+    <div>
+        <label for="Provincia">Provincia:</label>
+        @Html.TextBoxFor(model => model.Provincia)
+    </div>
+
+    <div>
+        <label for="Email">Email:</label>
+        @Html.TextBoxFor(model => model.Email)
+    </div>
+
+    <div>
+        <label for="Telefono">Telefono:</label>
+        @Html.TextBoxFor(model => model.Telefono)
+    </div>
+
+    <!-- Campi per i dati della prenotazione -->
+    <div>
+        <label for="IdCamera">Id Camera:</label>
+        <input type="text" id="IdCamera" name="IdCamera" />
+    </div>
+
+    <div>
+        <label for="NumeroProgressivoAnno">Numero Progressivo Anno:</label>
+        @Html.TextBoxFor(model => model.NumeroProgressivoAnno)
+    </div>
+
+    <div>
+        <label for="Anno">Anno:</label>
+        @Html.TextBoxFor(model => model.Anno)
+    </div>
+
+    <div>
+        <label for="PeriodoDal">Periodo Dal:</label>
+        @Html.EditorFor(model => model.PeriodoDal, new { htmlAttributes = new { @type = "date" } })
+    </div>
+
+    <div>
+        <label for="PeriodoAl">Periodo Al:</label>
+        @Html.EditorFor(model => model.PeriodoAl, new { htmlAttributes = new { @type = "date" } })
+    </div>
+
+    <div>
+        <label for="CaparraConfirmatoria">Caparra Confirmatoria:</label>
+        @Html.TextBoxFor(model => model.CaparraConfirmatoria)
+    </div>
+
+    <div>
+        <label for="TariffaApplicata">Tariffa Applicata:</label>
+        @Html.TextBoxFor(model => model.TariffaApplicata)
+    </div>
+
+    <div>
+        <label for="PernottamentoConColazione">Pernottamento con Colazione:</label>
+        @Html.CheckBoxFor(model => model.PernottamentoConColazione)
+    </div>
+
+    <div>
+        <label for="MezzaPensione">Mezza Pensione:</label>
+        @Html.CheckBoxFor(model => model.MezzaPensione)
+    </div>
+
+    <div>
+        <label for="PensioneCompleta">Pensione Completa:</label>
+        @Html.CheckBoxFor(model => model.PensioneCompleta)
+    </div>
+
+    <div>
+        <input type="submit" value="Conferma Prenotazione" />
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿@model EpiHotel.Models.DipendenteModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>LoginDipendente</h2>
+
+<div>
+@using (Html.BeginForm("EffettuaLogin", "Login", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+
+    <div>
+        <label for="Matricola">Matricola:</label>
+        @Html.TextBoxFor(model => model.Matricola)
+    </div>
+
+    <div>
+        <label for="PasswordDipendente">Password:</label>
+        @Html.PasswordFor(model => model.PasswordDipendente)
+    </div>
+
+    <div>
+        <input type="submit" value="Login" />
+    </div>
+}
+    </div>
