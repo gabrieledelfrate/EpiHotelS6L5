@@ -1,0 +1,58 @@
+﻿@model List<EpiHotel.Models.RicercaPrenotazioniModel>
+
+
+@{
+    ViewBag.Title = "PrenotazioniPerCliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2>Prenotazioni per Cliente</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Cliente</th>
+                    <th>Camera</th>
+                    <th>Data Prenotazione</th>
+                    <th>Numero Progressivo Anno</th>
+                    <th>Anno</th>
+                    <th>Periodo Dal</th>
+                    <th>Periodo Al</th>
+                    <th>Caparra Confirmatoria</th>
+                    <th>Tariffa Applicata</th>
+                    <th>Pernottamento con Colazione</th>
+                    <th>Mezza Pensione</th>
+                    <th>Pensione Completa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prenotazione in Model)
+                {
+                    <tr>
+                        <td>@prenotazione.Id</td>
+                        
+                        <td>@prenotazione.DataPrenotazione.ToShortDateString()</td>
+                        <td>@prenotazione.NumeroProgressivoAnno</td>
+                        <td>@prenotazione.Anno</td>
+                        <td>@prenotazione.PeriodoDal.ToShortDateString()</td>
+                        <td>@prenotazione.PeriodoAl.ToShortDateString()</td>
+                        <td>@prenotazione.CaparraConfirmatoria</td>
+                        <td>@prenotazione.TariffaApplicata</td>
+                        <td>@(prenotazione.PernottamentoConColazione ? "Sì" : "No")</td>
+                        <td>@(prenotazione.MezzaPensione ? "Sì" : "No")</td>
+                        <td>@(prenotazione.PensioneCompleta ? "Sì" : "No")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Nessuna prenotazione trovata per il cliente.</p>
+    }
+</div>
+

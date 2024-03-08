@@ -97,6 +97,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PrenotazioneController.cs" />
+    <Compile Include="Controllers\RicercaPrenotazioniController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -104,6 +105,7 @@
     <Compile Include="Models\DettaglioPrenotazioneViewModel.cs" />
     <Compile Include="Models\DipendenteModel.cs" />
     <Compile Include="Models\PrenotazioneViewModel.cs" />
+    <Compile Include="Models\RicercaPrenotazioniModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +118,8 @@
     <Content Include="Views\Prenotazione\Prenotazione.cshtml" />
     <Content Include="Views\Prenotazione\ElencoPrenotazioni.cshtml" />
     <Content Include="Views\Prenotazione\_DettaglioPrenotazionePartial.cshtml" />
+    <Content Include="Views\RicercaPrenotazioni\PrenotazioniPerCliente.cshtml" />
+    <Content Include="Views\RicercaPrenotazioni\NumeroPrenotazioniPensioneCompleta.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
