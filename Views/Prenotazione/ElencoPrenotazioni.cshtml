@@ -1,55 +1,181 @@
 ﻿@model List<EpiHotel.Models.PrenotazioneViewModel>
 
 @{
-    ViewBag.Title = "ElencoPrenotazioni";
+    ViewBag.Title = "Elenco Prenotazioni";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Elenco Prenotazioni</h2>
+<div class="container mt-5">
+    <h2>Elenco Prenotazioni</h2>
 
-@if (Model != null && Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Cliente</th>
-                <th>Camera</th>
-                <th>Data Prenotazione</th>
-                <th>Numero Progressivo Anno</th>
-                <th>Anno</th>
-                <th>Periodo Dal</th>
-                <th>Periodo Al</th>
-                <th>Caparra Confirmatoria</th>
-                <th>Tariffa Applicata</th>
-                <th>Pernottamento con Colazione</th>
-                <th>Mezza Pensione</th>
-                <th>Pensione Completa</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var prenotazione in Model)
-            {
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@prenotazione.Id</td>
-                    <td>@prenotazione.ClienteNome @prenotazione.ClienteCognome</td>
-                    <td>@prenotazione.IdCamera</td>
-                    <td>@prenotazione.DataPrenotazione.ToShortDateString()</td>
-                    <td>@prenotazione.NumeroProgressivoAnno</td>
-                    <td>@prenotazione.Anno</td>
-                    <td>@prenotazione.PeriodoDal.ToShortDateString()</td>
-                    <td>@prenotazione.PeriodoAl.ToShortDateString()</td>
-                    <td>@prenotazione.CaparraConfirmatoria</td>
-                    <td>@prenotazione.TariffaApplicata</td>
-                    <td>@(prenotazione.PernottamentoConColazione ? "Sì" : "No")</td>
-                    <td>@(prenotazione.MezzaPensione ? "Sì" : "No")</td>
-                    <td>@(prenotazione.PensioneCompleta ? "Sì" : "No")</td>
+                    <th>Id</th>
+                    <th>Cliente</th>
+                    <th>IdCamera</th>
+                    <th>Data Prenotazione</th>
+                    <th>Numero Progressivo Anno</th>
+                    <th>Anno</th>
+                    <th>Periodo Dal</th>
+                    <th>Periodo Al</th>
+                    <th>Caparra Confirmatoria</th>
+                    <th>Tariffa Applicata</th>
+                    <th>Pernottamento con Colazione</th>
+                    <th>Mezza Pensione</th>
+                    <th>Pensione Completa</th>
+                    <th>Servizi Aggiuntivi</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var prenotazione in Model)
+                {
+                    <tr>
+                        <td>@prenotazione.Id</td>
+                        <td>@prenotazione.ClienteNome @prenotazione.ClienteCognome</td>
+                        <td>@prenotazione.IdCamera</td>
+                        <td>@prenotazione.DataPrenotazione.ToShortDateString()</td>
+                        <td>@prenotazione.NumeroProgressivoAnno</td>
+                        <td>@prenotazione.Anno</td>
+                        <td>@prenotazione.PeriodoDal.ToShortDateString()</td>
+                        <td>@prenotazione.PeriodoAl.ToShortDateString()</td>
+                        <td>@prenotazione.CaparraConfirmatoria</td>
+                        <td>@prenotazione.TariffaApplicata</td>
+                        <td>@(prenotazione.PernottamentoConColazione ? "Sì" : "No")</td>
+                        <td>@(prenotazione.MezzaPensione ? "Sì" : "No")</td>
+                        <td>@(prenotazione.PensioneCompleta ? "Sì" : "No")</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServizi_@prenotazione.Id">
+                                Aggiungi Servizi
+                            </button>
+
+                            <div class="modal fade" id="modalServizi_@prenotazione.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Inserisci Servizi Aggiuntivi</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formServizio_@prenotazione.Id">
+                                                <input type="hidden" name="idPrenotazione" value="@prenotazione.Id" />
+
+                                                <div class="form-group">
+                                                    <label for="tipoServizio">Tipo Servizio:</label>
+                                                    <input type="text" class="form-control" name="tipoServizio" required />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="data">Data:</label>
+                                                    <input type="date" class="form-control" name="data" required />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="quantita">Quantità:</label>
+                                                    <input type="number" class="form-control" name="quantita" required />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="prezzo">Prezzo:</label>
+                                                    <input type="number" class="form-control" name="prezzo" step="0.01" required />
+                                                </div>
+
+                                                <button type="button" class="btn btn-primary" onclick="inserisciServizio(@prenotazione.Id)">Conferma</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDettaglio_@prenotazione.Id">
+                                Dettaglio Prenotazione
+                            </button>
+
+                            <div class="modal fade" id="modalDettaglio_@prenotazione.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Dettaglio Prenotazione</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="dettaglioPrenotazioneContainer_@prenotazione.Id"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" onclick="stampareDettaglio(@prenotazione.Id)">Stampa Dettaglio</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Nessuna prenotazione trovata.</p>
+    }
+</div>
+
+<script>
+    function inserisciServizio(idPrenotazione) {
+        var form = $("#formServizio_" + idPrenotazione);
+        var tipoServizio = form.find("[name='tipoServizio']").val();
+        var data = form.find("[name='data']").val();
+        var quantita = form.find("[name='quantita']").val();
+        var prezzo = form.find("[name='prezzo']").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Prenotazione/InserisciServizio",
+            data: {
+                idPrenotazione: idPrenotazione,
+                tipoServizio: tipoServizio,
+                data: data,
+                quantita: quantita,
+                prezzo: prezzo,
+            },
+            success: function (response) {
+                console.log(response);  
+                $("#modalServizi_" + idPrenotazione).modal("hide");
+            },
+            error: function (error) {
+                console.error(error);  
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>Nessuna prenotazione trovata.</p>
-}
+        });
+    }
+
+    function caricaDettaglioPrenotazione(idPrenotazione) {
+        $.ajax({
+            type: "GET",
+            url: "/Prenotazione/StampaDettaglioPrenotazione",
+            data: { idPrenotazione: idPrenotazione },
+            success: function (result) {
+                $("#dettaglioPrenotazioneContainer_" + idPrenotazione).html(result);
+                $("#modalDettaglio_" + idPrenotazione).modal("show");
+            },
+            error: function (error) {
+                console.error("Errore durante il recupero del dettaglio della prenotazione.");
+            }
+        });
+    }
+
+    function stampareDettaglio(idPrenotazione) {
+        // Aggiungi qui la logica per la stampa del dettaglio
+        // Puoi utilizzare una libreria di stampa JavaScript o altre soluzioni
+    }
+</script>

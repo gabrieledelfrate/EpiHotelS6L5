@@ -196,6 +196,92 @@ namespace EpiHotel.Controllers
             return View("~/Views/Prenotazione/ElencoPrenotazioni.cshtml", prenotazioniList);
         }
 
+        [HttpPost]
+        public ActionResult InserisciServizio(int idPrenotazione, string tipoServizio, DateTime data, int quantita, decimal prezzo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"INSERT INTO Servizi (IdPrenotazione, TipoServizio, Data, Quantita, Prezzo)
+                             VALUES (@IdPrenotazione, @TipoServizio, @Data, @Quantita, @Prezzo)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@IdPrenotazione", idPrenotazione);
+                        cmd.Parameters.AddWithValue("@TipoServizio", tipoServizio);
+                        cmd.Parameters.AddWithValue("@Data", data);
+                        cmd.Parameters.AddWithValue("@Quantita", quantita);
+                        cmd.Parameters.AddWithValue("@Prezzo", prezzo);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return Json(new { success = true, message = "Servizio inserito con successo." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Errore durante l'inserimento del servizio." });
+            }
+        }
+
+        public ActionResult StampaDettaglioPrenotazione(int idPrenotazione)
+        {
+            List<DettaglioPrenotazioneViewModel> dettaglioPrenotazione = new List<DettaglioPrenotazioneViewModel>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        string query = "StampaDettaglioPrenotazione";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@IdPrenotazione", idPrenotazione);
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    DettaglioPrenotazioneViewModel dettaglio = new DettaglioPrenotazioneViewModel
+                                    {
+                                        NumeroCamera = reader["NumeroCamera"].ToString(),
+                                        PeriodoDal = Convert.ToDateTime(reader["PeriodoDal"]),
+                                        PeriodoAl = Convert.ToDateTime(reader["PeriodoAl"]),
+                                        TariffaApplicata = Convert.ToDecimal(reader["TariffaApplicata"]),
+                                        TipoServizio = reader["TipoServizio"].ToString(),
+                                        DataServizio = reader["Data"] != DBNull.Value ? Convert.ToDateTime(reader["Data"]) : (DateTime?)null,
+                                        Quantita = reader["Quantita"] != DBNull.Value ? Convert.ToInt32(reader["Quantita"]) : (int?)null,
+                                        Prezzo = reader["Prezzo"] != DBNull.Value ? Convert.ToDecimal(reader["Prezzo"]) : (decimal?)null
+                                    };
+
+                                    dettaglioPrenotazione.Add(dettaglio);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Errore durante l'apertura della connessione al database";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Errore durante il recupero dei dettagli della prenotazione: " + ex.Message;
+            }
+
+            return PartialView("_DettaglioPrenotazionePartial", dettaglioPrenotazione);
+        }
+
 
     }
 }

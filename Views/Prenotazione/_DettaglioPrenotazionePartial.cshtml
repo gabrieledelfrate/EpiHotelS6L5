@@ -1,0 +1,49 @@
+﻿@model List<EpiHotel.Models.DettaglioPrenotazioneViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_DettaglioPrenotazionePartial</title>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Dettaglio Prenotazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            @foreach (var dettaglio in Model)
+            {
+                <p>Numero Camera: @dettaglio.NumeroCamera</p>
+                <p>Periodo Dal: @dettaglio.PeriodoDal.ToShortDateString()</p>
+                <p>Periodo Al: @dettaglio.PeriodoAl.ToShortDateString()</p>
+                <p>Tariffa Applicata: @dettaglio.TariffaApplicata</p>
+                <!-- Altri dettagli della prenotazione -->
+
+                <!-- Se ci sono servizi aggiuntivi -->
+                if (dettaglio.TipoServizio != null)
+                {
+                    <hr />
+                    <p>Servizio Aggiuntivo: @dettaglio.TipoServizio</p>
+                    <p>Data Servizio: @dettaglio.DataServizio?.ToShortDateString()</p>
+                    <p>Quantità: @dettaglio.Quantita</p>
+                    <p>Prezzo: @dettaglio.Prezzo</p>
+                    <!-- Altri dettagli del servizio aggiuntivo -->
+                }
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Stampa Dettaglio</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+        </div>
+    </div>
+</body>
+</html>

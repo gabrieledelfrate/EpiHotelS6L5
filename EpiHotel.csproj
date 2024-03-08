@@ -101,6 +101,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ClientePrenotazioneModel.cs" />
+    <Compile Include="Models\DettaglioPrenotazioneViewModel.cs" />
     <Compile Include="Models\DipendenteModel.cs" />
     <Compile Include="Models\PrenotazioneViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +115,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Prenotazione\Prenotazione.cshtml" />
     <Content Include="Views\Prenotazione\ElencoPrenotazioni.cshtml" />
+    <Content Include="Views\Prenotazione\_DettaglioPrenotazionePartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
