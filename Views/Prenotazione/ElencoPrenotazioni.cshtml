@@ -96,11 +96,11 @@
                         </td>
 
                         <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDettaglio_@prenotazione.Id">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDettaglio_@prenotazione.Id" onclick="MostraDettaglioPrenotazione(@prenotazione.Id)">
                                 Dettaglio Prenotazione
                             </button>
 
-                            <div class="modal fade" id="modalDettaglio_@prenotazione.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalDettaglioPrenotazione" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -110,10 +110,9 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <div id="dettaglioPrenotazioneContainer_@prenotazione.Id"></div>
+                                            <div id="dettaglioPrenotazioneContainer"></div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" onclick="stampareDettaglio(@prenotazione.Id)">Stampa Dettaglio</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                                         </div>
                                     </div>
@@ -159,17 +158,20 @@
         });
     }
 
-    function caricaDettaglioPrenotazione(idPrenotazione) {
+    function MostraDettaglioPrenotazione(idPrenotazione) {
         $.ajax({
             type: "GET",
-            url: "/Prenotazione/StampaDettaglioPrenotazione",
+            url: "/Prenotazione/MostraDettaglioPrenotazione",
             data: { idPrenotazione: idPrenotazione },
             success: function (result) {
-                $("#dettaglioPrenotazioneContainer_" + idPrenotazione).html(result);
-                $("#modalDettaglio_" + idPrenotazione).modal("show");
+                $("#dettaglioPrenotazioneContainer").html(result);
+                $("#modalDettaglioPrenotazione").modal("show");
             },
-            error: function (error) {
-                console.error("Errore durante il recupero del dettaglio della prenotazione.");
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Errore durante il recupero del dettaglio della prenotazione:", textStatus);
+                console.log(xhr.responseText);
+
+                alert("Si è verificato un errore durante il recupero del dettaglio della prenotazione. Controlla la console per ulteriori dettagli.");
             }
         });
     }

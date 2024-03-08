@@ -228,9 +228,9 @@ namespace EpiHotel.Controllers
             }
         }
 
-        public ActionResult StampaDettaglioPrenotazione(int idPrenotazione)
+        public ActionResult MostraDettaglioPrenotazione(int idPrenotazione)
         {
-            List<DettaglioPrenotazioneViewModel> dettaglioPrenotazione = new List<DettaglioPrenotazioneViewModel>();
+            string dettaglioPrenotazioneMarkup = "";
 
             try
             {
@@ -240,32 +240,40 @@ namespace EpiHotel.Controllers
 
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
-                        string query = "StampaDettaglioPrenotazione";
+                        string query = "mostradettaglioprenotazione";
 
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        try
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@IdPrenotazione", idPrenotazione);
-
-                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            using (SqlCommand cmd = new SqlCommand(query, connection))
                             {
-                                while (reader.Read())
-                                {
-                                    DettaglioPrenotazioneViewModel dettaglio = new DettaglioPrenotazioneViewModel
-                                    {
-                                        NumeroCamera = reader["NumeroCamera"].ToString(),
-                                        PeriodoDal = Convert.ToDateTime(reader["PeriodoDal"]),
-                                        PeriodoAl = Convert.ToDateTime(reader["PeriodoAl"]),
-                                        TariffaApplicata = Convert.ToDecimal(reader["TariffaApplicata"]),
-                                        TipoServizio = reader["TipoServizio"].ToString(),
-                                        DataServizio = reader["Data"] != DBNull.Value ? Convert.ToDateTime(reader["Data"]) : (DateTime?)null,
-                                        Quantita = reader["Quantita"] != DBNull.Value ? Convert.ToInt32(reader["Quantita"]) : (int?)null,
-                                        Prezzo = reader["Prezzo"] != DBNull.Value ? Convert.ToDecimal(reader["Prezzo"]) : (decimal?)null
-                                    };
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@IdPrenotazione", idPrenotazione);
 
-                                    dettaglioPrenotazione.Add(dettaglio);
+                                using (SqlDataReader reader = cmd.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        dettaglioPrenotazioneMarkup = $@"
+                                    <p>Numero Camera: {reader["NumeroCamera"]}</p>
+                                    <p>Nome Cliente: {reader["ClienteNome"]}</p>
+                                    <p>Cognome Cliente: {reader["ClienteCognome"]}</p>
+                                    <p>Email Cliente: {reader["ClienteEmail"]}</p>
+                                    <p>Telefono Cliente: {reader["ClienteTelefono"]}</p>
+                                    <p>Periodo Dal: {Convert.ToDateTime(reader["PeriodoDal"]).ToShortDateString()}</p>
+                                    <p>Periodo Al: {Convert.ToDateTime(reader["PeriodoAl"]).ToShortDateString()}</p>
+                                    <p>Tariffa Applicata: {Convert.ToDecimal(reader["TariffaApplicata"])}</p>                                   
+                                    <p>Caparra Confirmatoria: {Convert.ToDecimal(reader["CaparraConfirmatoria"])}</p>
+                                    <p>Servizi Aggiuntivi: {reader["ServiziAggiuntivi"]}</p>
+                                    <p>Somma Servizi: {Convert.ToDecimal(reader["SommaServizi"])}</p>
+                                    <p>Importo da Saldare: {Convert.ToDecimal(reader["ImportoDaSaldare"])}</p>                                    
+                                    ";
+                                    }
                                 }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.ErrorMessage = "Errore durante l'esecuzione della stored procedure: " + ex.Message;
                         }
                     }
                     else
@@ -279,8 +287,10 @@ namespace EpiHotel.Controllers
                 ViewBag.ErrorMessage = "Errore durante il recupero dei dettagli della prenotazione: " + ex.Message;
             }
 
-            return PartialView("_DettaglioPrenotazionePartial", dettaglioPrenotazione);
+            return Content(dettaglioPrenotazioneMarkup, "text/html");
         }
+
+
 
 
     }

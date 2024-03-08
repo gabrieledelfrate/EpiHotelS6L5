@@ -20,7 +20,8 @@ namespace EpiHotel.Models
         public decimal TariffaApplicata { get; set; }
         public bool PernottamentoConColazione { get; set; }
         public bool MezzaPensione { get; set; }
-        public bool PensioneCompleta { get; set; }       
+        public bool PensioneCompleta { get; set; }
+       
         public string ClienteNome { get; set; }
         public string ClienteCognome { get; set; }
     }

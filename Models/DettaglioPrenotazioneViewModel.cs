@@ -15,6 +15,10 @@ namespace EpiHotel.Models
         public DateTime? DataServizio { get; set; }
         public int? Quantita { get; set; }
         public decimal? Prezzo { get; set; }
+        public string NomeCliente { get; set; }
+        public string CognomeCliente { get; set; }
+        public string EmailCliente { get; set; }
+        public string TelefonoCliente { get; set; }
+        public decimal ImportoDaSaldare { get; set; } 
     }
-
 }

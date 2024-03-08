@@ -4,46 +4,39 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>_DettaglioPrenotazionePartial</title>
-</head>
-<body>
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Dettaglio Prenotazione</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            @foreach (var dettaglio in Model)
-            {
-                <p>Numero Camera: @dettaglio.NumeroCamera</p>
-                <p>Periodo Dal: @dettaglio.PeriodoDal.ToShortDateString()</p>
-                <p>Periodo Al: @dettaglio.PeriodoAl.ToShortDateString()</p>
-                <p>Tariffa Applicata: @dettaglio.TariffaApplicata</p>
-                <!-- Altri dettagli della prenotazione -->
-
-                <!-- Se ci sono servizi aggiuntivi -->
-                if (dettaglio.TipoServizio != null)
-                {
-                    <hr />
-                    <p>Servizio Aggiuntivo: @dettaglio.TipoServizio</p>
-                    <p>Data Servizio: @dettaglio.DataServizio?.ToShortDateString()</p>
-                    <p>Quantità: @dettaglio.Quantita</p>
-                    <p>Prezzo: @dettaglio.Prezzo</p>
-                    <!-- Altri dettagli del servizio aggiuntivo -->
-                }
-            }
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Stampa Dettaglio</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Dettaglio Prenotazione</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-</body>
-</html>
+    <div class="modal-body">
+        @foreach (var dettaglio in Model)
+        {
+            <p>Numero Camera: @dettaglio.NumeroCamera</p>
+            <p>Periodo Dal: @dettaglio.PeriodoDal.ToShortDateString()</p>
+            <p>Periodo Al: @dettaglio.PeriodoAl.ToShortDateString()</p>
+            <p>Tariffa Applicata: @dettaglio.TariffaApplicata</p>
+
+            <p>Nome Cliente: @dettaglio.NomeCliente</p>
+            <p>Cognome Cliente: @dettaglio.CognomeCliente</p>
+            <p>Email Cliente: @dettaglio.EmailCliente</p>
+            <p>Telefono Cliente: @dettaglio.TelefonoCliente</p>
+
+            if (dettaglio.TipoServizio != null)
+            {
+                <p>Servizio Aggiuntivo: @dettaglio.TipoServizio</p>
+                <p>Data Servizio: @(dettaglio.DataServizio.HasValue ? dettaglio.DataServizio.Value.ToShortDateString() : "N/A")</p>
+                <p>Quantità: @dettaglio.Quantita</p>
+                <p>Prezzo: @dettaglio.Prezzo</p>
+            }
+        }
+
+        <p>Importo da Saldare: @Model.Sum(d => d.ImportoDaSaldare)</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Stampa Dettaglio</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+    </div>
+</div>
