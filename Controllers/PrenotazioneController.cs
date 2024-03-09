@@ -75,8 +75,8 @@ namespace EpiHotel.Controllers
         [HttpPost]
         private int InserisciCliente(SqlConnection connection, SqlTransaction transaction, ClientePrenotazioneModel model)
         {
-            string query = @"INSERT INTO Clienti (Nome, Cognome, Citta, Provincia, Email, Telefono)
-                         VALUES (@Nome, @Cognome, @Citta, @Provincia, @Email, @Telefono);
+            string query = @"INSERT INTO Clienti (Nome, Cognome, Citta, Provincia, Email, Telefono, CodiceFiscale)
+                         VALUES (@Nome, @Cognome, @Citta, @Provincia, @Email, @Telefono, @CodiceFiscale);
                          SELECT SCOPE_IDENTITY();";
 
             using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
@@ -87,6 +87,7 @@ namespace EpiHotel.Controllers
                 cmd.Parameters.AddWithValue("@Provincia", model.Provincia);
                 cmd.Parameters.AddWithValue("@Email", model.Email);
                 cmd.Parameters.AddWithValue("@Telefono", model.Telefono);
+                cmd.Parameters.AddWithValue("@CodiceFiscale", model.CodiceFiscale);
 
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }

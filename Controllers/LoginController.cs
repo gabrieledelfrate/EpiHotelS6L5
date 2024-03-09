@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.SqlClient;
 using EpiHotel.Models;
+using System.Web.Security;
 
 namespace EpiHotel.Controllers
 {
@@ -22,11 +23,14 @@ namespace EpiHotel.Controllers
         {
             if (AutenticazioneUtente(model.Matricola, model.PasswordDipendente))
             {
+                System.Web.Security.FormsAuthentication.SetAuthCookie(model.Matricola, false);
+
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "Matricola o password non validi");
             return View("Index", model);
         }
+
 
         private bool AutenticazioneUtente(string matricola, string password)
         {
@@ -46,6 +50,13 @@ namespace EpiHotel.Controllers
                     }
                 }
             }
+        }
+
+        public ActionResult Logout()
+        {
+            System.Web.Security.FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Login");
         }
     }
 }

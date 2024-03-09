@@ -14,6 +14,7 @@ namespace EpiHotel.Models
         public string Provincia { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
+        public string CodiceFiscale { get; set; }
 
         [Display(Name = "Id Camera")]
         public int IdCamera { get; set; }
