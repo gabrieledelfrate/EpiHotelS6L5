@@ -6,5 +6,12 @@
 <div class="container mt-5">
     <h2>Numero Prenotazioni Pensione Completa</h2>
 
-    <p>Il numero totale di prenotazioni per soggiorni di tipo "pensione completa" è: @Model</p>
+    @if (ViewBag.NumeroPrenotazioniPensioneCompleta != null)
+    {
+        <p>Il numero totale di prenotazioni per soggiorni di tipo "pensione completa" è: @ViewBag.NumeroPrenotazioniPensioneCompleta</p>
+    }
+    else
+    {
+        <p>Errore durante il recupero del numero di prenotazioni per pensione completa. Dettagli: @ViewBag.ErrorMessage</p>
+    }
 </div>

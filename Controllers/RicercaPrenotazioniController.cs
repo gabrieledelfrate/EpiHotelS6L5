@@ -14,7 +14,7 @@ namespace EpiHotel.Controllers
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public ActionResult PrenotazioniPerCliente(string codiceFiscale)
         {
-            List<RicercaPrenotazioniModel> prenotazioniList = new List<RicercaPrenotazioniModel>();
+            List<RicercaPrenotazioniModel> prenotazioniCliente = new List<RicercaPrenotazioniModel>();
 
             try
             {
@@ -25,10 +25,11 @@ namespace EpiHotel.Controllers
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
                         string query = @"
-                            SELECT *
-                            FROM Prenotazioni
-                            WHERE IdCliente = (SELECT Id FROM Clienti WHERE CodiceFiscale = @CodiceFiscale)
-                        ";
+                    SELECT Prenotazioni.*
+                    FROM Prenotazioni
+                    INNER JOIN Clienti ON Prenotazioni.IdCliente = Clienti.Id
+                    WHERE Clienti.CodiceFiscale = @CodiceFiscale
+                ";
 
                         using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
@@ -55,7 +56,7 @@ namespace EpiHotel.Controllers
                                         PensioneCompleta = Convert.ToBoolean(reader["PensioneCompleta"])
                                     };
 
-                                    prenotazioniList.Add(prenotazione);
+                                    prenotazioniCliente.Add(prenotazione);
                                 }
                             }
                         }
@@ -68,11 +69,12 @@ namespace EpiHotel.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Errore durante il recupero delle prenotazioni per il cliente: " + ex.Message;
+                ViewBag.ErrorMessage = "Errore durante la ricerca delle prenotazioni per il cliente: " + ex.Message;
             }
 
-            return View(prenotazioniList);
+            return View(prenotazioniCliente);
         }
+
 
         public ActionResult NumeroPrenotazioniPensioneCompleta()
         {

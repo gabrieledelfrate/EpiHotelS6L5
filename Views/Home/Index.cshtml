@@ -1,15 +1,48 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Pannello di controllo prenotazioni</h2>
 
-@Html.ActionLink("Inserisci Nuova Prenotazione", "Prenotazione", "Prenotazione")
-<br />
-@Html.ActionLink("Visualizza Elenco Prenotazioni", "ElencoPrenotazioni", "Prenotazione")
-<br />
-@Html.ActionLink("Prenotazioni per Cliente", "PrenotazioniPerCliente", "RicercaPrenotazioni")
-<br />
-@Html.ActionLink("Numero Prenotazioni Pensione Completa", "NumeroPrenotazioniPensioneCompleta", "RicercaPrenotazioni")
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Inserisci Nuova Prenotazione</h5>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("Prenotazione", "Prenotazione")'">Vai</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Visualizza Elenco Prenotazioni</h5>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("ElencoPrenotazioni", "Prenotazione")'">Vai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Prenotazioni per Cliente</h5>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("PrenotazioniPerCliente", "RicercaPrenotazioni")'">Vai</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Numero Prenotazioni Pensione Completa</h5>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("NumeroPrenotazioniPensioneCompleta", "RicercaPrenotazioni")'">Vai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
